@@ -4,6 +4,7 @@ var text;
 var next = null;
 var words = [];
 var wordNames;
+var moving = false;
 
 var wordSpacing = 25;
 var width = 1024;
@@ -33,6 +34,8 @@ function preload() {
 function create() {
 	words = game.add.group();
 	//text = game.add.text(100,game.world.centerY,' ');
+
+	game.stage.backgroundColor = '#face00';
 
     buildMenuRegion();
     buildPhrase();
@@ -74,6 +77,9 @@ function buildPhrase() {
     	text.fontWeight = 'bold';
     	text.fontSize = 70;
 
+	 	text.stroke = '#000000';
+    	text.strokeThickness = 3;
+
 		xPos += text.width + wordSpacing;
 
     	text.fill = defaultColor;
@@ -97,10 +103,13 @@ function highlightWord(word) {
 }
 
 function newWord() {
-	unselectAll();
 
-	playPhrase();
-	clearScreen();	
+	if (!moving) {
+		unselectAll();
+		playPhrase();
+		clearScreen();	
+		moving = true;
+	}
 }
 
 function clearScreen() {
@@ -118,6 +127,7 @@ function clearScreen() {
     			
     			buildPhrase();
     			done = true;
+    			moving = false;
     		}
     	});
 	}
