@@ -1,5 +1,6 @@
 function playWord(word) {
 
+	// todo: Need to strip punctuation
 	game.sound.play(wordNames[word.framename].toLowerCase());
 
 }
@@ -18,6 +19,7 @@ function loadAudioForWord(wordArray) {
 
 	var w;
 	for (var i = 0; i < wordArray.length; i ++) {
+		// todo: Need to strip punctuation
 		w = wordArray[i].toLowerCase();
 
 		game.load.audio(w,'audio/words/' + w + '.mp3');
@@ -25,7 +27,7 @@ function loadAudioForWord(wordArray) {
 		sounds[i] = w;
 	}
 	game.load.start();
-	game.load.onLoadComplete.add(loadComplete,this);
+	//game.load.onLoadComplete.add(loadComplete,this);
 }
 
 function loadComplete() {

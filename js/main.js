@@ -11,6 +11,8 @@ var height = 768;
 var rightKey;
 var sounds = [];
 
+var currentWordIndex, currentPhrase;
+
 var game = new Phaser.Game(width, height, Phaser.AUTO, '', { 
 	preload: preload, 
 	create: create,
@@ -21,21 +23,14 @@ function preload() {
 
     game.load.image('arrow', 'images/arrow.png');
     game.load.image('play', 'images/play.png');
-    game.load.image('buttons', 'images/misctransparent.png');
-
-    //game.load.audio('jump','audio/words/jump.mp3');
-    //game.load.audio('over','audio/words/over.mp3');
-    //game.load.audio('pancake','audio/words/pancake.mp3');
+    // home = |0, Next = |1, music = |4
+    //game.load.spritesheet('buttons', 'images/misctransparent.png',58,5);
 
 }
-
+   
 function create() {
 	//words = game.add.group();
 	words= [];
-
-//game.add.audio('jump');
-//game.add.audio('over');
-//game.add.audio('pancake');
 
 	game.stage.backgroundColor = '#182d3b';
 
@@ -60,7 +55,6 @@ function buildMenuRegion() {
  	arrow.inputEnabled = true;
  	arrow.events.onInputDown.add(newWord,this);
 }
-
 
 function buildPhrase() {
 	
@@ -107,19 +101,30 @@ function wordClicked(word) {
 }
 
 function highlightWord(word) {
-	unselectCurrentWord();
 	// Unselect current word
-
+	unselectCurrentWord();
 
 	// Highlight selected one
 	words[word.framename].fill = selectColor;
+	currentWordIndex = word.framename;
+	
+}
+
+function unselectCurrentWord() {
+	if (currentWordIndex != undefined) {
+		words[currentWordIndex].fill = defaultColor;
+	}
+}
+
+function selectAll() {
+	for (var i = 0; i < words.length; i++) {
+		words[i].fill = selectColor;
+	}
 }
 
 function newWord() {
-
 	if (!moving) {
 		unselectCurrentWord();
-		//playPhrase();
 		clearScreen();	
 		moving = true;
 	}
@@ -145,26 +150,27 @@ function clearScreen() {
 	}
 }
 
-function unselectCurrentWord() {
-	// TODO: this should probably be made more efficient to only unselect the current word
-
-	for (var i = 0; i < words.length; i++) {
-		words[i].fill = defaultColor;
-	}
-}
-
-function selectAll() {
-	for (var i = 0; i < words.length; i++) {
-		words[i].fill = selectColor;
-	}
-}
-
 function getPhrase() {
 	var size = phrases.length;
 	var rand = Math.floor(Math.random() * size);
 
-	//return phrases[rand];
-	// temporarily hard code to "Jump over pancake""; (index 1 in array)
-	return phrases[0];
+	var w = phrases[rand];
+
+
+	if (!currentPhrase) {
+		currentPhrase = w;
+		return w;
+	}
+	else {
+		while (w == currentPhrase) {
+			rand = Math.floor(Math.random() * size);
+			w = phrases[rand];
+		}
+		currentPhrase = w;
+		return w;
+	}
+	
+	//
+	//return phrases[0];
 }
 
