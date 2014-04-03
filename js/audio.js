@@ -1,30 +1,37 @@
 function playWord(word) {
 	var x = 0;
 	var snd = fileName(wordNames[word.framename]);
-	console.log("ms " + snd.duration);
 
 	game.sound.play(snd);
-		console.log("ms " + snd.duration);
-	while (x < 100) {
-	if (snd.isPlaying) {
-	      console.log("playing");
-	}
-	else {
-		console.log("not playing");
-	}
-	x++}
-}
-
-function fileName(name) {
-	// returns a file name (puncuation stripped, lower case)
-	return name.toLowerCase().replace(/[\.,-\/#!$%\^&\*;:{}=\-_`'~()]/g,"");
+	return snd;
 }
 
 function playPhrase() {
+	var x = 0;
+	var snd;
+	var playing = false;
+
 	for (var i = 0; i < words.length; i ++) {
 		highlightWord(words[i]);
 		// TODO: This needs to trigger event when playing is done
-		playWord(words[i]);
+		snd = playWord(words[i]);
+		if (snd.isPlaying) { 
+			console.log("sound is still playing"); 
+		}
+		else {
+			console.log("Not playing");
+		}
+
+
+//	while (x < 100) {
+//	if (snd.isPlaying) {
+//	      console.log("playing");
+//	}
+//	else {
+//		console.log("not playing");
+//	}
+//	x++}
+
 	}
 }
 
@@ -64,4 +71,9 @@ function disposeAudio() {
 	for (var i = 0; i < sounds.length; i ++) {
 		console.log("disposing of sound asset for " + sounds[i.framename]);
 	}
+}
+
+function fileName(name) {
+	// returns a file name (puncuation stripped, lower case)
+	return name.toLowerCase().replace(/[\.,-\/#!$%\^&\*;:{}=\-_`'~()]/g,"");
 }
