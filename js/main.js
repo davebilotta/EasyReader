@@ -7,11 +7,12 @@ var moving = false;
 
 var wordSpacing = 25;
 var width = 1024;
-var height = 768;
+var height = 700;
 var rightKey;
 var sounds = [];
 
 var currentWordIndex, currentPhrase;
+
 
 var game = new Phaser.Game(width, height, Phaser.AUTO, '', { 
 	preload: preload, 
@@ -21,10 +22,9 @@ var game = new Phaser.Game(width, height, Phaser.AUTO, '', {
  
 function preload() {
 
-    game.load.image('arrow', 'images/arrow.png');
-    game.load.image('play', 'images/play.png');
-    // home = |0, Next = |1, music = |4
-    //game.load.spritesheet('buttons', 'images/misctransparent.png',58,5);
+    game.load.image('home', 'images/home.png');
+    game.load.image('next', 'images/right-arrow.png');
+    game.load.image('play', 'images/music.png');
 
 }
    
@@ -32,7 +32,10 @@ function create() {
 	//words = game.add.group();
 	words= [];
 
-	game.stage.backgroundColor = '#182d3b';
+	//game.stage.backgroundColor = '#182d3b';
+	game.stage.backgroundColor = 'rgb(200,200,200)';
+	// What does this do?
+	//game.input.touch.preventDefault = false;
 
     buildMenuRegion(this);
     buildPhrase();
@@ -47,13 +50,24 @@ function update() {
 }
 
 function buildMenuRegion() {
-	play = game.add.sprite(game.world.width - 120, 0, 'play');
+	var rightBuffer = 10;
+	var iconSize = 46;
+	var i = 3;
+	home = game.add.sprite(game.world.width - ((iconSize * i--) + rightBuffer), 0, 'home');
+	home.inputEnabled = true;
+ 	home.events.onInputDown.add(goHome,this);
+
+ 	play = game.add.sprite(game.world.width - ((iconSize * i--) + rightBuffer), 0, 'play');
  	play.inputEnabled = true;
  	play.events.onInputDown.add(playPhrase,this);
 
- 	arrow = game.add.sprite(game.world.width - 70, 0, 'arrow');
- 	arrow.inputEnabled = true;
- 	arrow.events.onInputDown.add(newWord,this);
+ 	next = game.add.sprite(game.world.width - ((iconSize * i--) + rightBuffer), 0, 'next');
+ 	next.inputEnabled = true;
+ 	next.events.onInputDown.add(newWord,this);
+
+}
+function goHome() {
+	console.log("home was clicked");
 }
 
 function buildPhrase() {
@@ -169,8 +183,5 @@ function getPhrase() {
 		currentPhrase = w;
 		return w;
 	}
-	
-	//
-	//return phrases[0];
 }
 

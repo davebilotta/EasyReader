@@ -1,8 +1,23 @@
 function playWord(word) {
+	var x = 0;
+	var snd = fileName(wordNames[word.framename]);
+	console.log("ms " + snd.duration);
 
-	// todo: Need to strip punctuation
-	game.sound.play(wordNames[word.framename].toLowerCase());
+	game.sound.play(snd);
+		console.log("ms " + snd.duration);
+	while (x < 100) {
+	if (snd.isPlaying) {
+	      console.log("playing");
+	}
+	else {
+		console.log("not playing");
+	}
+	x++}
+}
 
+function fileName(name) {
+	// returns a file name (puncuation stripped, lower case)
+	return name.toLowerCase().replace(/[\.,-\/#!$%\^&\*;:{}=\-_`'~()]/g,"");
 }
 
 function playPhrase() {
@@ -16,18 +31,27 @@ function playPhrase() {
 function loadAudioForWord(wordArray) {
 	// w will be an array of words
 	sounds = [];
+	//var test = game.load.audio('test','audio/words/banana.mp3');
+	//test = game.add.audio(test);
+	//game.load.start();
+	//console.log(test.totalDuration);
+	//var snd = new Phaser.Sound(this,'test');
+	//var dur = game.soundconsole.log()
 
+	var snd;
 	var w;
 	for (var i = 0; i < wordArray.length; i ++) {
-		// todo: Need to strip punctuation
-		w = wordArray[i].toLowerCase();
+		w = fileName(wordArray[i]);
 
 		game.load.audio(w,'audio/words/' + w + '.mp3');
-		game.add.audio(w);
+		snd = game.add.audio(w);
 		sounds[i] = w;
 	}
 	game.load.start();
-	//game.load.onLoadComplete.add(loadComplete,this);
+}
+
+function markerComplete() {
+	console.log("marker complete");
 }
 
 function loadComplete() {
