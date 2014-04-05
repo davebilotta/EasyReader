@@ -1,3 +1,11 @@
+/* TODO:
+	Word wrapping
+	Menu buttons / stages 
+	Call preload again on every new phrase
+	  - will allow to be notified of sound events?
+
+*/
+
 var defaultColor = '#ff6600';
 var selectColor = '#ffffff';
 var text;
@@ -39,6 +47,7 @@ $(document).ready(function() {
 	height = window.innerHeight;
 
 	console.log("width " + width + " height "+ height);
+
 
 	game = new Phaser.Game(width, height, Phaser.AUTO, '', { 
 		preload: preload, 
@@ -158,6 +167,7 @@ function highlightWord(word) {
 function unselectCurrentWord() {
 	if (currentWordIndex != undefined) {
 		words[currentWordIndex].fill = defaultColor;
+		currentWordIndex = null;
 	}
 }
 
